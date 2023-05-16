@@ -1,4 +1,4 @@
-# realsns
+# Node.jsを用いたバックエンド開発の練習
 
 ## 使用フレームワーク
 - EXPRESS
