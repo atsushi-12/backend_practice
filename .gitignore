@@ -1,0 +1,2 @@
+# nodemoduleを追跡から除外
+node_modules/
