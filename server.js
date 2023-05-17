@@ -9,6 +9,20 @@ const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 //PORTの設定
 const PORT = 3000;
+//mongooseのインポート
+const mongoose = require("mongoose");
+const req = require("express/lib/request");
+//databaseの接続 envファイルに記載したURLを使用する
+require("dotenv").config();
+
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("DB connected");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 //ミドルウェア 第一引数にパスを指定することで、そのパスにアクセスしたときに第二引数の関数が実行される
 app.use("/api/users", usersRoute);
 app.use("/api/auth", authRoute);
