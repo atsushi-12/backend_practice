@@ -12,6 +12,22 @@ const User = require("../models/User");
 //   res.send("UserProfile");
 // });
 
-//postメソッド ユーザー登録
-
-module.exports = router;
+//CRUD操作
+//update
+router.put("/:id", async (req, res) => {
+  //req.params.idでidを取得する
+  if (req.body.userId === req.params.id || req.body.isAdmin){
+    try{
+      //findByIdAndUpdateはidを探して更新する mongooseのドキュメント参照
+      const user = await User.findByIdAndUpdate(req.params.id, {
+        //$set すべてのフィールドを更新する
+        $set: req.body,
+    });
+  }catch(err){
+      return res.status(500).json(err);
+    }
+    else{
+      return res.status(403).json("You can update only your account!(あなたはあなたのアカウントのみ更新できます)");
+    }
+  }})
+module.exports = router

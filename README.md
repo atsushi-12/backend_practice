@@ -45,3 +45,15 @@
 Express で使われる HTTP リクエストとレスポンスの処理の間に挟まれる関数や処理　　
 ミドルウェアを用いることで認証やログ記録、エラーハンドリングなどを行う事ができる
 基本的に`app.use()`を使って呼び出しているようだ。`express.json()`というコードはその途中処理の過程で json 形式のデータを取り扱う事をサポートしている
+
+## HTTP ステータスコードについて
+
+[HTTP ステータスコード一覧とリクエストとレスポンスの意味を解説](https://www.itmanage.co.jp/column/http-www-request-response-statuscode/)
+
+> [アイティーエム様からの引用]
+
+## CRUD について
+
+### user 情報の更新
+
+1. prams(リクエスト時に指定する、例:`/api/user/:id`)と DB から取得する id の照合
