@@ -8,11 +8,26 @@
 - nodemon
 - React.js
 
+### ほかにインストールしたもの
+
+- dotenv:env ファイルの変数を他のファイルで利用できるようにするライブラリ
+- postman:
+
 ## 概要
 
 - クライアント(React)
 - サーバー(node.js)
 - データベース(mongoDB)
+
+クライアントから req を送りサーバーから res を返すという仕組み
+
+### req
+
+- GET
+- POST
+- PUT
+- DELETE
+- ...etc
 
 ### mongoose とは？
 
