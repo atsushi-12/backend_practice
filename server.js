@@ -11,7 +11,7 @@ const postRoute = require("./routes/posts");
 const PORT = 3000;
 //mongooseのインポート
 const mongoose = require("mongoose");
-const req = require("express/lib/request");
+
 //databaseの接続 envファイルに記載したURLを使用する
 require("dotenv").config();
 
@@ -23,10 +23,13 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-//ミドルウェア 第一引数にパスを指定することで、そのパスにアクセスしたときに第二引数の関数が実行される
+app.use(express.json()); //ミドルウェア 第一引数にパスを指定することで、そのパスにアクセスしたときに第二引数の関数が実行される
+
 app.use("/api/users", usersRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/posts", postRoute);
+//postの情報
+
 // reqとはリクエストのこと、resはレスポンスのこと
 // "/"にアクセスしたときにHello World!と表示する
 app.get("/", (req, res) => {
