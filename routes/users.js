@@ -127,4 +127,5 @@ router.put("/:id/unfollow", async (req, res) => {
   }
   //findByIdAndUpdateはidを探して更新する mongooseのドキュメント参照
 });
+
 module.exports = router;
