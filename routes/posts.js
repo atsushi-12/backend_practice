@@ -1,9 +1,10 @@
 //ユーザー情報の管理
 const router = require("express").Router();
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 router.post("/", async (req, res) => {
-  const newPost = new post(req.body);
+  const newPost = new Post(req.body);
   try {
     //newでインスタンスを作成した後は必ずsaveする
     const savedPost = await newPost.save();
@@ -79,4 +80,48 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//投稿にいいねをつける
+
+//条件
+//1,自分にいいねができるので、そこの判定は行わない
+//2,いいねをする際にすでにいいねがついていない
+//3,すでにいいねがされている場合はいいねを外す
+
+router.put("/:id/like", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    // いいねをしているかどうかを確認する
+    if (!post.likes.includes(req.body.userId)) {
+      // いいねをつける
+      await post.updateOne({ $push: { likes: req.body.userId } });
+      return res.status(200).json({ message: "いいねされました", post });
+    } else {
+      // いいねを外す
+      await post.updateOne({ $pull: { likes: req.body.userId } });
+      return res.status(200).json({ message: "いいねが外されました", post });
+    }
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+//タイムライン投稿の取得
+//　エンドポイントは"/timelineのみだと、他のルートが被り、エラーが発生するので、"/:userId/timeline"、あるいはtimeline/allとする
+
+router.get("/timeline/all", async (req, res) => {
+  try {
+    const currentUser = await User.findById(req.body.userId);
+    const userPosts = await Post.find({ userId: currentUser._id });
+    //人の投稿内容をすべて取得する
+    const friendPosts = await Promise.all(
+      currentUser.followings.map((friendId) => {
+        return Post.find({ userId: friendId });
+      })
+    );
+
+    return;
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
 module.exports = router;
