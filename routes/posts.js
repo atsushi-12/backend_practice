@@ -66,4 +66,17 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+//投稿を見るため取得する
+router.get("/:id", async (req, res) => {
+  try {
+    //投稿のidを取得する
+    const post = await Post.findById(req.params.id);
+    return res
+      .status(200)
+      .json({ message: "投稿の取得に成功しました", post: post.desc });
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
 module.exports = router;
