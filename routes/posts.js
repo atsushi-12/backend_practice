@@ -80,46 +80,21 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//投稿にいいねをつける
-
-//条件
-//1,自分にいいねができるので、そこの判定は行わない
-//2,いいねをする際にすでにいいねがついていない
-//3,すでにいいねがされている場合はいいねを外す
-
-router.put("/:id/like", async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.id);
-    // いいねをしているかどうかを確認する
-    if (!post.likes.includes(req.body.userId)) {
-      // いいねをつける
-      await post.updateOne({ $push: { likes: req.body.userId } });
-      return res.status(200).json({ message: "いいねされました", post });
-    } else {
-      // いいねを外す
-      await post.updateOne({ $pull: { likes: req.body.userId } });
-      return res.status(200).json({ message: "いいねが外されました", post });
-    }
-  } catch (err) {
-    return res.status(500).json(err);
-  }
-});
-
-//タイムライン投稿の取得
-//　エンドポイントは"/timelineのみだと、他のルートが被り、エラーが発生するので、"/:userId/timeline"、あるいはtimeline/allとする
-
+//タイムライン取得
 router.get("/timeline/all", async (req, res) => {
   try {
+    //ログインしているユーザーの情報を取得する
     const currentUser = await User.findById(req.body.userId);
+    //ログインしているユーザーの投稿を取得する
     const userPosts = await Post.find({ userId: currentUser._id });
-    //人の投稿内容をすべて取得する
+    //ログインしているユーザーのフォローしているユーザーの投稿を取得する
     const friendPosts = await Promise.all(
       currentUser.followings.map((friendId) => {
         return Post.find({ userId: friendId });
       })
     );
-
-    return;
+    //ログインしているユーザーの投稿とフォローしているユーザーの投稿を結合する
+    res.json(userPosts.concat(...friendPosts));
   } catch (err) {
     return res.status(500).json(err);
   }
