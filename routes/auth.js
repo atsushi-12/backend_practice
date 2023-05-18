@@ -24,7 +24,6 @@ router.post("/login", async (req, res) => {
   try {
     //emailが一致するユーザーを探す
     //fingOneは一つのドキュメントを返し、reqはつまりなんらかの形で受け取ったキーemailの値を探す
-    //postmanでBodyの欄に{email: "hogehoge@hogehoge.com", password: "test"}として検証した。2023_05_17
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return res.status(404).json("User not found");

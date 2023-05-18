@@ -46,5 +46,5 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-//モデルの作成 第一引数にはモデルの名前、第二引数にはスキーマを指定する
+//モデルの作成
 module.exports = mongoose.model("User", userSchema);
